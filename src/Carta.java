@@ -34,7 +34,7 @@ public class Carta {
     public boolean puedeColocarse(Carta cartaArriba){
         return (
                 this.valor == cartaArriba.getValor() ||
-                this.color == cartaArriba.getColor() || this.valor == -1
+                this.color == cartaArriba.getColor()
         );
     }
 
