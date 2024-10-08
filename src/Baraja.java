@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
+import java.util.stream.Collectors;
 public class Baraja {
     private ArrayList<Carta> baraja;
     public Baraja() {
@@ -79,23 +81,7 @@ public class Baraja {
         }
     }
     public void mezclarCartas(){
-        int cont = 0;
-        int g = 0;
-        int[] arr = new int[baraja.size()];
-        for(int i=0;i<baraja.size();i++){
-            arr[i]=0;
-        }
-        Random rand = new Random();
-        while(cont<baraja.size()){
-            do {
-                g = rand.nextInt(baraja.size());
-            }while (arr[g]==1);
-            arr[g]=1;
-            Carta cartaCont = baraja.get(g);
-            baraja.set(g,baraja.get(cont));
-            baraja.set(cont,cartaCont);
-            cont = cont + 1;
-        }
+        Collections.shuffle(baraja);
     }
     public void mostrar(){
         for(Carta carta:baraja){
