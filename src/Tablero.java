@@ -23,17 +23,27 @@ public class Tablero {
             }
         };
 
+        JScrollPane scrollPane = new JScrollPane(panel);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+
         frame.setTitle("Tablero de Cartas");
         frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(panel);
+        frame.add(scrollPane);
         frame.setVisible(true);
+
 
         panel.setPreferredSize(new Dimension(800, 600));
         tableroImage = panel.createImage(800, 600);
         graphic = (Graphics2D) tableroImage.getGraphics();
+
         objetos = new ArrayList<>();
         cartas = new HashMap<>();
+    }
+
+    public int getWidth(){
+        return panel.getWidth();
     }
 
     // Método para obtener el singleton del tablero
@@ -44,12 +54,11 @@ public class Tablero {
         return tableroSingleton;
     }
 
-    // Método para dibujar una carta en el tablero
     public void draw(Carta carta) {
         try {
             Image img = new ImageIcon(carta.getRutaDeImagen()).getImage();
-            cartas.put(carta, img);  // Guardar la carta y su imagen en el mapa
-            objetos.add(carta);  // Agregar la carta a la lista de objetos
+            cartas.put(carta, img);
+            objetos.add(carta);
             redraw();
         } catch (Exception e) {
             System.out.println("Error al cargar la imagen: " + e.getMessage());
@@ -63,13 +72,13 @@ public class Tablero {
         redraw();
     }
 
-    // Método para redibujar todos los objetos
     private void redraw() {
-        clear();  // Limpiar el tablero
+        clear();
         for (Object obj : objetos) {
             if (obj instanceof Carta) {
                 Carta carta = (Carta) obj;
                 Image img = cartas.get(carta);
+
                 if (img != null) {
                     graphic.drawImage(img, carta.getX(), carta.getY(), carta.getAncho(), carta.getAlto(), null);
                 }
@@ -78,7 +87,6 @@ public class Tablero {
         panel.repaint();
     }
 
-    // Método para limpiar el tablero
     private void clear() {
         graphic.clearRect(0, 0, panel.getWidth(), panel.getHeight());
         panel.repaint();

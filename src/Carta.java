@@ -7,6 +7,8 @@ public class Carta {
     private int ancho;
     private int alto;
     private boolean isVisible;
+    private boolean estaDibujada;
+    private boolean estaVolteada;
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
@@ -15,19 +17,20 @@ public class Carta {
         sb.append(color);
         return sb.toString();
     }
-    // Constructor de Carta
+
     public Carta(int valor, String color) {
         this.valor = valor;
         this.color = color;
         this.rutaDeImagen = Rutas.getRuta(valor + color);
-        this.ancho = 100;  // Ancho de la carta
-        this.alto = 150;   // Alto de la carta
-        this.x = 0;        // Posición X inicial
-        this.y = 0;        // Posición Y inicial
+        this.ancho = 100;
+        this.alto = 150;
+        this.x = 0;
+        this.y = 0;
         this.isVisible = false;
+        this.estaDibujada = false;
+        this.estaVolteada = true;
     }
 
-    // Métodos getter y setter para posición y tamaño
     public int getX() { return x; }
     public void setX(int x) { this.x = x; }
     public int getY() { return y; }
@@ -48,21 +51,30 @@ public class Carta {
     }
     public boolean isVisible() { return isVisible; }
 
-
-    // Método para hacer visible la carta
-    public void makeVisible() {
-        isVisible = true;
-        draw();  // Dibujar la carta
+    public boolean estaVolteada() {
+        return estaVolteada;
     }
 
-    // Método para hacer invisible la carta
+    public void voltear(){
+        this.estaVolteada = !this.estaVolteada;
+        if (this.estaDibujada){
+            makeInvisible();
+            makeVisible();
+        }
+    }
+
+    public void makeVisible() {
+        isVisible = true;
+        draw();
+    }
+
     public void makeInvisible() {
-        erase();  // Borrar la carta
+        erase();
         isVisible = false;
     }
 
     // Método para dibujar la carta en el tablero
-    public void draw() {
+    private void draw() {
         if (isVisible) {
             Tablero.getTablero().draw(this);  // Llamar al tablero para que dibuje la carta
         }

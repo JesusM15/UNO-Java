@@ -5,12 +5,15 @@ public class Mano {
     public Mano() {
         mano = new ArrayList();
     }
+
     public void guardarCartas(ArrayList<Carta> cartas) {
         mano.addAll(cartas);
     }
+
     public ArrayList<Carta> obtenerCartas(int x) {
         return mano.stream()
                 .limit(x)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
+
 }
