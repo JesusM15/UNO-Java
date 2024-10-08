@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 public class Mano {
     private ArrayList<Carta> mano;
     public Mano() {
@@ -8,10 +9,8 @@ public class Mano {
         mano.addAll(cartas);
     }
     public ArrayList<Carta> obtenerCartas(int x) {
-        ArrayList<Carta> aux = new ArrayList();
-        for(int i = 0; i < x; i++) {
-            aux.add(mano.get(i));
-        }
-        return aux;
+        return mano.stream()
+                .limit(x)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 }
