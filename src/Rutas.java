@@ -61,8 +61,13 @@ public class Rutas {
         rutasCartas.put("11amarillo", "./media/masdosamarillo.png");
         rutasCartas.put("11verde", "./media/masdosverde.png");
 
-        rutasCartas.put("12SC", "./media/mascuatro.png");
-        rutasCartas.put("13SC", "./media/cambiarcolor.png");
+        rutasCartas.put("12rojo", "./media/reversarojo.png");
+        rutasCartas.put("12azul", "./media/reversaazul.png");
+        rutasCartas.put("12amarillo", "./media/reversaamarillo.png");
+        rutasCartas.put("12verde", "./media/reversaverde.png");
+
+        rutasCartas.put("13SC", "./media/mascuatro.png");
+        rutasCartas.put("14SC", "./media/cambiarcolor.png");
     }
 
     public static String getRuta(String valorColor) {
