@@ -67,7 +67,7 @@ public class Rutas {
         rutasCartas.put("12verde", "./media/reversaverde.png");
 
         rutasCartas.put("13SC", "./media/mascuatro.png");
-        rutasCartas.put("14SC", "./media/cambiarcolor.png");
+        rutasCartas.put("14SC", "./media/cambiacolor.png");
     }
 
     public static String getRuta(String valorColor) {
