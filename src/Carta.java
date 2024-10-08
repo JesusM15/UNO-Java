@@ -8,6 +8,13 @@ public class Carta {
     private int alto;
     private boolean isVisible;
 
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(valor);
+        sb.append(" de color: ");
+        sb.append(color);
+        return sb.toString();
+    }
     // Constructor de Carta
     public Carta(int valor, String color) {
         this.valor = valor;
