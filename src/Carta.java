@@ -112,4 +112,11 @@ public class Carta {
         setY(nuevoY);
         botonCarta.setBounds(x, y, ancho, alto);  // Actualizar la posición del botón
     }
+
+    public boolean sePuedeColocarEn(Carta otraCarta){
+        return (
+                otraCarta.getColor() == this.color || otraCarta.getValor() == this.valor ||
+                        this.valor == 13 || this.valor == 14
+                );
+    }
 }

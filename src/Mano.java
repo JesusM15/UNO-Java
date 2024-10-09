@@ -23,10 +23,9 @@ public class Mano {
         }
     }
     public boolean sePuedePonerAlgunaCarta(Carta carta) {
-        return mano.stream().anyMatch(carta1 -> carta1.getValor() == carta.getValor() ||
-                carta1.getColor() == carta.getColor() ||
-                carta1.getValor() == 13 ||
-                carta1.getValor() == 14);
+        return mano.stream().anyMatch(carta1 ->
+                carta1.sePuedeColocarEn(carta)
+        );
     }
     public void voltearTodasLasCartas() {
         for(Carta carta : mano) {
