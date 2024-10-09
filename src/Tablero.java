@@ -11,7 +11,7 @@ public class Tablero {
     private int altoCarta = 150;
     private int width = 1400;
     private int height = 700;
-    private Carta ultimaCarta;
+    private Carta ultimaCarta = null;
 
     private Tablero() {
         frame = new JFrame("Tablero de Cartas");
@@ -52,17 +52,24 @@ public class Tablero {
     }
 
     public void encimarCarta(Carta carta) {
-      int posx = getWidth() / 2 - anchoCarta;
+      int posx = 1400 / 2 - anchoCarta + 4;
       int posy = getHeight() / 2 - altoCarta;
 
       carta.desplazar(posx, posy);
-      try {
-            Thread.sleep(100);  // Añadir un retraso de 200ms entre cada carta
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-      }
-      carta.voltear();
+    if(ultimaCarta != null){
+        ultimaCarta.makeInvisible();
+    }
+      setUltimaCarta(carta);
     };
+
+    public void tirarCarta(Carta carta) {
+        int posx = 1400 / 2 - anchoCarta + 4;
+        int posy = getHeight() / 2 - altoCarta;
+
+        carta.desplazar(posx, posy);
+        this.ultimaCarta.makeInvisible();
+        setUltimaCarta(carta);
+    }
 
     public void entregarCarta(Jugador jugador, Carta carta) {
         int posx = 0;

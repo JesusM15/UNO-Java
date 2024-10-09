@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,7 +15,15 @@ public class Uno {
     }
 
     public void jugarTurno(Carta carta){
+        Jugador jugador = obtenerJugador();
+        if(!jugador.getMano().existeLaCarta(carta) || !carta.sePuedeColocarEn(this.ultimaCarta)){
+            return;
+        }
         System.out.println(carta);
+        colocarCarta(carta);
+        jugador.getMano().removerCarta(carta);
+        jugador.getMano().voltearTodasLasCartas();
+        obtenerTurno();
     }
 
     public void jugar(){
@@ -23,15 +32,22 @@ public class Uno {
         colocarPrimerCarta();
         while (ultimaCarta.getValor() == 13 || ultimaCarta.getValor() == 14){
             colocarPrimerCarta();
+            System.out.println("dsad");
         }
         obtenerTurno();
 
+    }
+
+    public void colocarCarta(Carta carta){
+        this.ultimaCarta = carta;
+        tablero.tirarCarta(carta);
     }
 
     public void colocarPrimerCarta(){
         Carta carta = baraja.entregarCartas(1).getFirst();
         this.ultimaCarta = carta;
         tablero.encimarCarta(carta);
+        carta.voltear();
     }
 
     public void repartirCartas(){
@@ -81,11 +97,11 @@ public class Uno {
             carta.voltear();
             jugador.getMano().agregarCarta(carta);
             tablero.entregarCarta(jugador, carta);
-            try {
-                Thread.sleep(100);  // Añadir un retraso de 200ms entre cada carta
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Thread.sleep(100);  // Añadir un retraso de 200ms entre cada carta
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
         }
 
     }
@@ -97,11 +113,12 @@ public class Uno {
     public void prepararBaraja(){
         int cartaAncho = 100;
         int cartaAlto = 150;
+
         baraja.construirBaraja();
         baraja.mezclarCartas();
-        baraja.moverBarajaACentro((tablero.getWidth() / 2) - cartaAncho*2,
-                tablero.getHeight() / 2 - cartaAlto);
         baraja.voltearCartas();
+        baraja.moverBarajaACentro((1400 / 2) - cartaAncho*2,
+                tablero.getHeight() / 2 - cartaAlto);
     }
 
 }
