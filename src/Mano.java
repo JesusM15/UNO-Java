@@ -27,9 +27,9 @@ public class Mano {
         }
     }
     public boolean sePuedePonerAlgunaCarta(Carta carta) {
-        return mano.stream().anyMatch(carta1 ->
+        return mano.stream().filter(carta1 ->
                 carta1.sePuedeColocarEn(carta)
-        );
+        ).count()>0;
     }
     public void voltearTodasLasCartas() {
         for(Carta carta : mano) {
