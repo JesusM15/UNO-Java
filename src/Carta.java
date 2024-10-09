@@ -30,7 +30,7 @@ public class Carta {
         this.estaDibujada = false;
         this.estaVolteada = true;
     }
-
+    public int getValor() {return valor;}
     public int getX() { return x; }
     public void setX(int x) { this.x = x; }
     public int getY() { return y; }

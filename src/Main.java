@@ -2,7 +2,7 @@ public class Main {
     public static void main(String[] args) {
         Tablero tablero = Tablero.getTablero();
         Baraja baraja = new Baraja();
-         baraja.construitBaraja();
+         baraja.construirBaraja();
          baraja.mezclarCartas();
 
         int posx = 0;

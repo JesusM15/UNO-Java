@@ -11,9 +11,27 @@ public class Mano {
     }
 
     public ArrayList<Carta> obtenerCartas(int x) {
-        return mano.stream()
-                .limit(x)
-                .collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<Carta> cartas = new ArrayList();
+        for(int i=0;i<x;i++) {
+            cartas.add(mano.get(i));
+        }
+        return cartas;
+    }
+    public void recibirCartas(ArrayList<Carta> cartas) {
+        for(Carta carta : cartas) {
+            mano.add(carta);
+        }
+    }
+    public boolean sePuedePonerAlgunaCarta(Carta carta) {
+        return mano.stream().anyMatch(carta1 -> carta1.getValor() == carta.getValor() ||
+                carta1.getColor() == carta.getColor() ||
+                carta1.getValor() == 13 ||
+                carta1.getValor() == 14);
+    }
+    public void voltearTodasLasCartas() {
+        for(Carta carta : mano) {
+            carta.voltear();
+        }
     }
 
 }
