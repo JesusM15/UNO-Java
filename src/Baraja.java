@@ -2,10 +2,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 import java.util.stream.Collectors;
+
 public class Baraja {
     private ArrayList<Carta> baraja;
-    public Baraja() {
+    private Uno juego;
+
+    public Baraja(Uno juego) {
         baraja = new ArrayList<Carta>();
+        this.juego = juego;
     }
     public void construirBaraja() {
         int cont = 0;
@@ -14,13 +18,13 @@ public class Baraja {
                 for(int j =0;j<2;j++){
                     if(cont==0){
                         for(int k =0;k<13;k++){
-                            Carta carta = new Carta(k,"rojo");
+                            Carta carta = new Carta(k,"rojo", juego);
                             baraja.add(carta);
                         }
                         cont = cont +1;
                     }else{
                         for(int k =1;k<13;k++){
-                            Carta carta = new Carta(k,"rojo");
+                            Carta carta = new Carta(k,"rojo", juego);
                             baraja.add(carta);
                         }
                     }
@@ -29,12 +33,12 @@ public class Baraja {
                 for(int j =0;j<2;j++){
                     if(cont==0){
                         for(int k =0;k<13;k++){
-                            Carta carta = new Carta(k,"amarillo");
+                            Carta carta = new Carta(k,"amarillo", juego);
                             baraja.add(carta);
                         }
                     }else{
                         for(int k =1;k<13;k++){
-                            Carta carta = new Carta(k,"amarillo");
+                            Carta carta = new Carta(k,"amarillo", juego);
                             baraja.add(carta);
                         }
                     }
@@ -43,12 +47,12 @@ public class Baraja {
                 for(int j =0;j<2;j++){
                     if(cont==0){
                         for(int k =0;k<13;k++){
-                            Carta carta = new Carta(k,"verde");
+                            Carta carta = new Carta(k,"verde", juego);
                             baraja.add(carta);
                         }
                     }else{
                         for(int k =1;k<13;k++){
-                            Carta carta = new Carta(k,"verde");
+                            Carta carta = new Carta(k,"verde", juego);
                             baraja.add(carta);
                         }
                     }
@@ -57,12 +61,12 @@ public class Baraja {
                 for(int j =0;j<2;j++){
                     if(cont==0){
                         for(int k =0;k<13;k++){
-                            Carta carta = new Carta(k,"azul");
+                            Carta carta = new Carta(k,"azul", juego);
                             baraja.add(carta);
                         }
                     }else{
                         for(int k =1;k<13;k++){
-                            Carta carta = new Carta(k,"azul");
+                            Carta carta = new Carta(k,"azul", juego);
                             baraja.add(carta);
                         }
                     }
@@ -72,10 +76,10 @@ public class Baraja {
         }
         for(int i=0;i<8;i++){
             if(i<=3) {
-                Carta carta1 = new Carta(13, "SC");
+                Carta carta1 = new Carta(13, "SC", juego);
                 baraja.add(carta1);
             }else {
-                Carta carta2 = new Carta(14, "SC");
+                Carta carta2 = new Carta(14, "SC", juego);
                 baraja.add(carta2);
             }
         }
@@ -91,9 +95,23 @@ public class Baraja {
     public ArrayList<Carta> entregarCartas(int x) {
         ArrayList<Carta> cartas = new ArrayList<Carta>();
         for(int i=0;i<x;i++){
-            cartas.add(baraja.get(i));
+            cartas.add(baraja.get(0));
             baraja.remove(0);
         }
         return cartas;
     }
+
+    public void voltearCartas(){
+        for(Carta carta:baraja){
+            carta.voltear();
+        }
+    }
+
+    public void moverBarajaACentro(int centroX, int centroY){
+        for(Carta carta:baraja){
+            carta.move(centroX, centroY);
+            carta.makeVisible();
+        }
+    }
+
 }

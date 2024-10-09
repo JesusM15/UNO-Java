@@ -15,6 +15,8 @@ public class Carta {
     private boolean estaDibujada;
     private boolean estaVolteada;
     private JButton botonCarta;
+    private boolean entregada;
+    private Uno juego;
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
@@ -24,7 +26,7 @@ public class Carta {
         return sb.toString();
     }
 
-    public Carta(int valor, String color) {
+    public Carta(int valor, String color, Uno juego) {
         this.valor = valor;
         this.color = color;
         this.rutaDeImagen = Rutas.getRuta(valor + color); // Ruta de la imagen
@@ -35,8 +37,9 @@ public class Carta {
         this.isVisible = false;
         this.estaDibujada = false;
         this.estaVolteada = false; // Por defecto, no volteada
+        this.juego = juego;
+        this.entregada = false;
 
-        // Crear el botón con la imagen
         botonCarta = new JButton();
         actualizarImagen();
 
@@ -50,6 +53,7 @@ public class Carta {
             public void actionPerformed(ActionEvent e) {
                 System.out.println(Carta.this);  // Mostrar la carta
                 Carta.this.voltear();
+                juego.jugarTurno(Carta.this);
             }
         });
     }
@@ -58,6 +62,13 @@ public class Carta {
         ImageIcon icon = new ImageIcon(rutaDeImagen);
         Image img = icon.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH); // Ajustar imagen al tamaño del botón
         botonCarta.setIcon(new ImageIcon(img));
+    }
+    public boolean estaEntregada(){
+        return this.entregada;
+    }
+
+    public void setEntregada(boolean entregada){
+        this.entregada = true;
     }
     public int getValor() {return valor;}
     public int getX() { return x; }
@@ -111,6 +122,36 @@ public class Carta {
         setX(nuevoX);
         setY(nuevoY);
         botonCarta.setBounds(x, y, ancho, alto);  // Actualizar la posición del botón
+    }
+
+    public void desplazar(int nuevoX, int nuevoY) {
+        int delay = 5;
+        int steps = 10;
+
+        double stepX = (nuevoX - x) / (double) steps;
+        double stepY = (nuevoY - y) / (double) steps;
+
+        Timer timer = new Timer(delay, new ActionListener() {
+            int currentStep = 0;
+            double actualX = x;
+            double actualY = y;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (currentStep < steps) {
+                    actualX += stepX;
+                    actualY += stepY;
+
+                    botonCarta.setBounds((int) actualX, (int) actualY, ancho, alto);
+                    currentStep++;
+                } else {
+                    botonCarta.setBounds(nuevoX, nuevoY, ancho, alto);
+                    ((Timer) e.getSource()).stop();
+                }
+            }
+        });
+
+        timer.start(); // Iniciar el movimiento suave
     }
 
     public boolean sePuedeColocarEn(Carta otraCarta){

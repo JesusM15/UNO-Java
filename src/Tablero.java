@@ -7,16 +7,21 @@ public class Tablero {
     private JFrame frame;
     private JPanel panel;
     private ArrayList<JButton> botonesCartas;  // Lista de botones de cartas
+    private int anchoCarta = 100;
+    private int altoCarta = 150;
+    private int width = 1400;
+    private int height = 700;
+    private Carta ultimaCarta;
 
     private Tablero() {
         frame = new JFrame("Tablero de Cartas");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1400, 700);
-
+        frame.setSize(width, 700);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         panel = new JPanel();
         panel.setLayout(null);  // Layout nulo para posicionamiento absoluto
-        panel.setPreferredSize(new Dimension(1400, 700));  // Tamaño del panel
-
+        panel.setPreferredSize(new Dimension(width, 700));  // Tamaño del panel
+        panel.setBackground(Color.WHITE);
         JScrollPane scrollPane = new JScrollPane(panel);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
@@ -46,7 +51,56 @@ public class Tablero {
         panel.repaint();
     }
 
+    public void encimarCarta(Carta carta) {
+      int posx = getWidth() / 2 - anchoCarta;
+      int posy = getHeight() / 2 - altoCarta;
+
+      carta.desplazar(posx, posy);
+      try {
+            Thread.sleep(100);  // Añadir un retraso de 200ms entre cada carta
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+      }
+      carta.voltear();
+    };
+
+    public void entregarCarta(Jugador jugador, Carta carta) {
+        int posx = 0;
+        int espacioEntreCartas = 10;
+        int posy = jugador.getId() == 2 ? 0 : getHeight() - altoCarta;
+
+        ArrayList<Carta> cartas = jugador.getMano().obtenerMano();
+        posx += (cartas.size() - 1) * (anchoCarta + espacioEntreCartas);
+
+        necesitaRedimensionarse(posx, posy);
+
+        carta.desplazar(posx, posy);
+    }
+
     public int getWidth(){
         return panel.getWidth();
+    }
+
+    public int getHeight(){
+        return panel.getHeight();
+    }
+
+    public void necesitaRedimensionarse(int posx, int posy){
+        int anchoRequerido = posx + anchoCarta + 10;
+
+        if (anchoRequerido > getWidth()) {
+            this.width = anchoRequerido;
+        }
+
+        panel.setPreferredSize(new Dimension(this.width, getHeight()));
+        panel.revalidate();
+    }
+
+    public Carta getUltimaCarta() {
+        return ultimaCarta;
+    }
+
+    public void setUltimaCarta(Carta carta) {
+        ultimaCarta = carta;
     }
 }

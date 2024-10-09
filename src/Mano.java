@@ -10,6 +10,10 @@ public class Mano {
         mano.addAll(cartas);
     }
 
+    public ArrayList<Carta> obtenerMano(){
+        return this.mano;
+    }
+
     public ArrayList<Carta> obtenerCartas(int x) {
         ArrayList<Carta> cartas = new ArrayList();
         for(int i=0;i<x;i++) {
@@ -31,6 +35,10 @@ public class Mano {
         for(Carta carta : mano) {
             carta.voltear();
         }
+    }
+
+    public void agregarCarta(Carta carta){
+        mano.add(carta);
     }
 
 }

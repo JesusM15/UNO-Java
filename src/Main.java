@@ -1,29 +1,20 @@
+import javax.swing.*;
+import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) {
-        Tablero tablero = Tablero.getTablero();
-        Baraja baraja = new Baraja();
-         baraja.construirBaraja();
-         baraja.mezclarCartas();
+//        Baraja baraja = new Baraja();
+//        baraja.construirBaraja();
+//        baraja.mezclarCartas();
 
-        int posx = 0;
-        int c = 0;
-        int posy = 0;
-        for(Carta carta : baraja.entregarCartas(30)){
-            carta.move(posx, posy);
-            posx = carta.getAncho() + posx;
-
-            if(c%2 == 0){
-                carta.voltear();
-            }
-            carta.makeVisible();
-
-            if(posx == tablero.getWidth()){
-                posx = 0;
-                posy = carta.getAlto() + posy;
-            }
-
-            c++;
+        ArrayList<Jugador> jugadores = new ArrayList<>();
+        int nPlayers = 2;
+        for(int i = 0; i<nPlayers; i++){
+            String name = JOptionPane.showInputDialog(null, "Nombre jugador #" + (i+1));
+            jugadores.add(new Jugador(name, (i+1)));
         }
+
+        Uno game = new Uno(jugadores);
+        game.jugar();
 
     }
 }
