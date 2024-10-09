@@ -8,7 +8,7 @@ public class Uno {
     private int turnoActual = 0;
     private Tablero tablero = Tablero.getTablero();
     private Carta ultimaCarta;
-
+    private boolean turnoCancelado = false;
     public Uno(ArrayList<Jugador> jugadores) {
         this.jugadores = jugadores;
         this.baraja = new Baraja(Uno.this);
@@ -19,16 +19,20 @@ public class Uno {
         if(!jugador.getMano().existeLaCarta(carta) || !carta.sePuedeColocarEn(this.ultimaCarta)){
             return;
         }
+
         System.out.println(carta);
         colocarCarta(carta);
         jugador.getMano().removerCarta(carta);
+        if(manejarComodin(carta)){
+            this.turnoCancelado = false;
+        }
         jugador.getMano().voltearTodasLasCartas();
         obtenerTurno();
     }
 
     public void jugar(){
         prepararBaraja();
-        repartirCartas();
+        repartirCartas(7);
         colocarPrimerCarta();
         while (ultimaCarta.getValor() == 13 || ultimaCarta.getValor() == 14){
             colocarPrimerCarta();
@@ -49,9 +53,67 @@ public class Uno {
         tablero.encimarCarta(carta);
         carta.voltear();
     }
+    public  boolean manejarComodin(Carta carta){
+        String color;
+        int valor = carta.getValor();
+        if(carta.getValor()<10){
+            return false;
+        }
+        switch(valor){
+            case 10: // saltar carta
+                this.turnoCancelado = true;
+                obtenerTurno();
+                break;
+            case 11: // mas dos
+                this.turnoCancelado = true;
+                obtenerTurno();
+                comerCartas(2);
+                obtenerJugador().getMano().obtenerMano().stream().filter(
+                        carta1 -> !carta1.estaVolteada()
+                ).forEach(carta1 -> {
+                    carta1.voltear();
+                });
+                break;
+            case 12: // reversa
+                break;
+            case 13:  // mas cuatro
+                this.turnoCancelado = true;
+                obtenerTurno();
+                comerCartas(4);
+                obtenerJugador().getMano().obtenerMano().stream().filter(
+                        carta1 -> !carta1.estaVolteada()
+                ).forEach(carta1 -> {
+                    carta1.voltear();
+                });
+                do {
+                    color= JOptionPane.showInputDialog(null, "elige el color (azul,rojo,verde,amarillo):");
+                }while(!color.equals("azul") && !color.equals("rojo") && !color.equals("verde") && !color.equals("amarillo"));
+                this.ultimaCarta.setColor(color);
+                break;
+            case 14:
+                this.turnoCancelado = true;
+                do {
+                    color= JOptionPane.showInputDialog(null, "elige el color (azul,rojo,verde,amarillo):");
+                }while(!color.equals("azul") && !color.equals("rojo") && !color.equals("verde") && !color.equals("amarillo"));
+                ultimaCarta.setColor(color);
+                break;
+        }
 
-    public void repartirCartas(){
-        int n = 7;
+        return true;
+    }
+    public void comerCartas(int x){
+        for(int i=0;i<x;i++){
+            comer();
+        }
+    }
+    public boolean checarSiEsComidin(Carta carta){
+        if(carta.getValor()==13 || carta.getValor()==14){
+            return true;
+        }
+        return false;
+    }
+    public void repartirCartas(int cantidadDeCartas){
+        int n = cantidadDeCartas;
         ArrayList<Carta> cartas;
         for(Jugador jugador : jugadores){
             cartas = baraja.entregarCartas(n);
@@ -79,10 +141,10 @@ public class Uno {
         } else {
             this.turnoActual++;
         }
-
-        obtenerJugador().getMano().voltearTodasLasCartas();
-
-        while (!puedeColocar()){
+        if(!turnoCancelado) {
+            obtenerJugador().getMano().voltearTodasLasCartas();
+        }
+        while (!puedeColocar() && !turnoCancelado){
             comer();
         }
     }
@@ -107,6 +169,7 @@ public class Uno {
     }
 
     public boolean puedeColocar(){
+        System.out.println(ultimaCarta);
         return obtenerJugador().getMano().sePuedePonerAlgunaCarta(ultimaCarta);
     }
 
