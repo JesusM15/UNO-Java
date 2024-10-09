@@ -41,4 +41,15 @@ public class Mano {
         mano.add(carta);
     }
 
+    public boolean existeLaCarta(Carta otraCarta){
+        return mano.stream().filter(
+                carta -> otraCarta.getValor() == carta.getValor() &&
+                        otraCarta.getColor() == carta.getColor() &&
+                        otraCarta.getX() == carta.getX()
+        ).count() > 0;
+    }
+
+    public void removerCarta(Carta otraCarta){
+        mano.remove(otraCarta);
+    }
 }
