@@ -25,6 +25,7 @@ public class Uno {
             colocarPrimerCarta();
         }
         obtenerTurno();
+
     }
 
     public void colocarPrimerCarta(){
