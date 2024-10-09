@@ -35,6 +35,7 @@ public class Uno {
             System.out.println("dsad");
         }
         obtenerTurno();
+
     }
 
     public void colocarCarta(Carta carta){
