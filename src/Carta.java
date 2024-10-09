@@ -51,8 +51,6 @@ public class Carta {
         botonCarta.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(Carta.this);  // Mostrar la carta
-                Carta.this.voltear();
                 juego.jugarTurno(Carta.this);
             }
         });
