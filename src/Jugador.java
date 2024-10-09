@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Jugador {
     private String nombre;
     private int id;
@@ -7,4 +9,7 @@ public class Jugador {
     public int getId() {return id;}
     public void setId(int id) {this.id = id;}
     public Mano getMano() {return mano;}
+    public void tomarCartas(ArrayList<Carta> cartas) {
+        mano.recibirCartas(cartas);
+    }
 }

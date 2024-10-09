@@ -7,7 +7,7 @@ public class Baraja {
     public Baraja() {
         baraja = new ArrayList<Carta>();
     }
-    public void construitBaraja() {
+    public void construirBaraja() {
         int cont = 0;
         for(int i =0;i<4;i++){
             if(i==0){
