@@ -9,14 +9,29 @@ public class Uno {
     private Tablero tablero = Tablero.getTablero();
     private Carta ultimaCarta;
     private boolean turnoCancelado = false;
+    private boolean juegoTerminado = false;
+    private Jugador ganador = null;
+  
     public Uno(ArrayList<Jugador> jugadores) {
         this.jugadores = jugadores;
         this.baraja = new Baraja(Uno.this);
     }
 
+    public void obtenerGanador(){
+        jugadores.stream().filter(
+                jugador1 -> jugador1.getMano().obtenerMano().isEmpty()
+        ).forEach(jugador -> ganador = jugador);
+    }
+
+    public boolean checarSiElJuegoTermino(){
+        return jugadores.stream().filter(jugador ->
+                jugador.getMano().obtenerMano().isEmpty()
+        ).count() > 0;
+    }
+
     public void jugarTurno(Carta carta){
         Jugador jugador = obtenerJugador();
-        if(!jugador.getMano().existeLaCarta(carta) || !carta.sePuedeColocarEn(this.ultimaCarta)){
+        if(!jugador.getMano().existeLaCarta(carta) || !carta.sePuedeColocarEn(this.ultimaCarta) || ganador != null){
             return;
         }
 
@@ -36,7 +51,6 @@ public class Uno {
         colocarPrimerCarta();
         while (ultimaCarta.getValor() == 13 || ultimaCarta.getValor() == 14){
             colocarPrimerCarta();
-            System.out.println("dsad");
         }
         obtenerTurno();
 
@@ -146,6 +160,11 @@ public class Uno {
         }
         while (!puedeColocar() && !turnoCancelado){
             comer();
+        }
+
+        if(checarSiElJuegoTermino()){
+            obtenerGanador();
+            JOptionPane.showMessageDialog(null, "Juego terminado ganador: " + ganador.getNombre());
         }
     }
 
