@@ -7,6 +7,8 @@ public class Tablero {
     private JFrame frame;
     private JPanel panel;
     private ArrayList<JButton> botonesCartas;  // Lista de botones de cartas
+    private ArrayList<Carta> j1Cartas;
+    private ArrayList<Carta> j2Cartas;
     private int anchoCarta = 100;
     private int altoCarta = 150;
     private int width = 1400;
@@ -14,6 +16,8 @@ public class Tablero {
     private Carta ultimaCarta = null;
 
     private Tablero() {
+        j1Cartas = new ArrayList<>();
+        j2Cartas = new ArrayList<>();
         frame = new JFrame("Tablero de Cartas");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(width, 700);
@@ -51,6 +55,16 @@ public class Tablero {
         panel.repaint();
     }
 
+    private void reajustarPosiciones(ArrayList<Carta> cartas, int posy) {
+        int posx = 0;
+        for (Carta carta : cartas) {
+            carta.makeInvisible();
+            carta.move(posx, posy);
+            carta.makeVisible();
+            posx += anchoCarta + 10;
+        }
+    }
+
     public void encimarCarta(Carta carta) {
       int posx = 1400 / 2 - anchoCarta + 4;
       int posy = getHeight() / 2 - altoCarta;
@@ -65,6 +79,10 @@ public class Tablero {
     public void tirarCarta(Carta carta) {
         int posx = 1400 / 2 - anchoCarta + 4;
         int posy = getHeight() / 2 - altoCarta;
+        ArrayList<Carta> jcartas = carta.getY() == 0? j2Cartas : j1Cartas;
+        jcartas.remove(carta);
+        int posYCarta = carta.getY();
+        reajustarPosiciones(jcartas, posYCarta);
 
         carta.desplazar(posx, posy);
         this.ultimaCarta.makeInvisible();
@@ -82,6 +100,12 @@ public class Tablero {
         necesitaRedimensionarse(posx, posy);
 
         carta.desplazar(posx, posy);
+
+        if(jugador.getId() == 2){
+            j2Cartas.add(carta);
+        }else{
+            j1Cartas.add(carta);
+        }
     }
 
     public int getWidth(){

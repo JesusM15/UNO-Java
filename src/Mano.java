@@ -52,4 +52,8 @@ public class Mano {
     public void removerCarta(Carta otraCarta){
         mano.remove(otraCarta);
     }
+
+    public void imprimirMano(){
+        mano.stream().forEach(System.out::println);
+    }
 }

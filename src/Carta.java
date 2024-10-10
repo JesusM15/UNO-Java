@@ -150,6 +150,8 @@ public class Carta {
         });
 
         timer.start(); // Iniciar el movimiento suave
+        this.x = nuevoX;
+        this.y = nuevoY;
     }
 
     public boolean sePuedeColocarEn(Carta otraCarta){
