@@ -76,7 +76,7 @@ public class Uno {
         baraja.agregarCartaJugada(carta);
     }
     public  boolean manejarComodin(Carta carta){
-        String color;
+        String color = "";
         int valor = carta.getValor();
         if(carta.getValor()<10){
             return false;
@@ -112,13 +112,13 @@ public class Uno {
                 });
                 do {
                     color= JOptionPane.showInputDialog(null, "elige el color (azul,rojo,verde,amarillo):");
-                }while(!color.equals("azul") && !color.equals("rojo") && !color.equals("verde") && !color.equals("amarillo"));
+                }while(color == null || (!color.equals("azul") && !color.equals("rojo") && !color.equals("verde") && !color.equals("amarillo")));
                 this.ultimaCarta.setColor(color);
                 break;
             case 14:
                 do {
                     color= JOptionPane.showInputDialog(null, "elige el color (azul,rojo,verde,amarillo):");
-                }while(!color.equals("azul") && !color.equals("rojo") && !color.equals("verde") && !color.equals("amarillo"));
+                }while(color == null || (!color.equals("azul") && !color.equals("rojo") && !color.equals("verde") && !color.equals("amarillo")) );
                 ultimaCarta.setColor(color);
                 break;
         }
