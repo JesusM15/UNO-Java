@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -157,6 +158,10 @@ public class Uno {
         return this.jugadores.get(this.turnoActual - 1);
     }
 
+    public void reproducirSonido() {
+        Toolkit.getDefaultToolkit().beep();
+    }
+
     public void obtenerTurno(){
         if(turnoActual == this.jugadores.size() || turnoActual == 0){
             this.turnoActual = 1;
@@ -166,6 +171,7 @@ public class Uno {
 
         if(!turnoCancelado) {
             if(!prevTurnoCancelado){
+                reproducirSonido();
                 JOptionPane.showMessageDialog(null, "Iniciar turno");
             }else{
                 this.prevTurnoCancelado = false;
