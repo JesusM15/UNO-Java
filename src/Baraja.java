@@ -5,10 +5,12 @@ import java.util.stream.Collectors;
 
 public class Baraja {
     private ArrayList<Carta> baraja;
+    private ArrayList<Carta> cartasJugadas;
     private Uno juego;
 
     public Baraja(Uno juego) {
         baraja = new ArrayList<Carta>();
+        cartasJugadas = new ArrayList<Carta>();
         this.juego = juego;
     }
     public void construirBaraja() {
@@ -95,10 +97,30 @@ public class Baraja {
     public ArrayList<Carta> entregarCartas(int x) {
         ArrayList<Carta> cartas = new ArrayList<Carta>();
         for(int i=0;i<x;i++){
+            if (baraja.isEmpty()) {
+                rebarajarCartasJugadas();
+            }
             cartas.add(baraja.get(0));
             baraja.remove(0);
         }
         return cartas;
+    }
+
+    public void agregarCartaJugada(Carta carta) {
+        if(carta.estaVolteada()){
+            carta.voltear();
+        }
+        cartasJugadas.add(carta);
+    }
+
+    public void rebarajarCartasJugadas() {
+        if (cartasJugadas.size() > 1) {
+            Carta ultimaCarta = cartasJugadas.remove(cartasJugadas.size() - 1);
+            baraja.addAll(cartasJugadas);
+            cartasJugadas.clear();
+            cartasJugadas.add(ultimaCarta);
+            mezclarCartas();
+        }
     }
 
     public void voltearCartas(){

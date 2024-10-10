@@ -11,6 +11,7 @@ public class Uno {
     private boolean turnoCancelado = false;
     private boolean juegoTerminado = false;
     private Jugador ganador = null;
+    private boolean prevTurnoCancelado = false;
   
     public Uno(ArrayList<Jugador> jugadores) {
         this.jugadores = jugadores;
@@ -24,6 +25,9 @@ public class Uno {
     }
 
     public boolean checarSiElJuegoTermino(){
+        // checar si ya no hay cartas y ver si cualquier jugador puede colocar
+        // si no puede colocar ni uno gameover, de lo contrario, el que pueda colocar
+        // le damos el turno
         return jugadores.stream().filter(jugador ->
                 jugador.getMano().obtenerMano().isEmpty()
         ).count() > 0;
@@ -35,12 +39,13 @@ public class Uno {
             return;
         }
 
-        System.out.println(carta);
-        colocarCarta(carta);
         jugador.getMano().removerCarta(carta);
+        colocarCarta(carta);
+
         if(manejarComodin(carta)){
             this.turnoCancelado = false;
         }
+
         jugador.getMano().voltearTodasLasCartas();
         obtenerTurno();
     }
@@ -59,6 +64,7 @@ public class Uno {
     public void colocarCarta(Carta carta){
         this.ultimaCarta = carta;
         tablero.tirarCarta(carta);
+        baraja.agregarCartaJugada(carta);
     }
 
     public void colocarPrimerCarta(){
@@ -66,6 +72,7 @@ public class Uno {
         this.ultimaCarta = carta;
         tablero.encimarCarta(carta);
         carta.voltear();
+        baraja.agregarCartaJugada(carta);
     }
     public  boolean manejarComodin(Carta carta){
         String color;
@@ -76,10 +83,12 @@ public class Uno {
         switch(valor){
             case 10: // saltar carta
                 this.turnoCancelado = true;
+                this.prevTurnoCancelado = true;
                 obtenerTurno();
                 break;
             case 11: // mas dos
                 this.turnoCancelado = true;
+                this.prevTurnoCancelado = true;
                 obtenerTurno();
                 comerCartas(2);
                 obtenerJugador().getMano().obtenerMano().stream().filter(
@@ -92,6 +101,7 @@ public class Uno {
                 break;
             case 13:  // mas cuatro
                 this.turnoCancelado = true;
+                this.prevTurnoCancelado = true;
                 obtenerTurno();
                 comerCartas(4);
                 obtenerJugador().getMano().obtenerMano().stream().filter(
@@ -105,7 +115,6 @@ public class Uno {
                 this.ultimaCarta.setColor(color);
                 break;
             case 14:
-                this.turnoCancelado = true;
                 do {
                     color= JOptionPane.showInputDialog(null, "elige el color (azul,rojo,verde,amarillo):");
                 }while(!color.equals("azul") && !color.equals("rojo") && !color.equals("verde") && !color.equals("amarillo"));
@@ -131,7 +140,6 @@ public class Uno {
         ArrayList<Carta> cartas;
         for(Jugador jugador : jugadores){
             cartas = baraja.entregarCartas(n);
-            System.out.println(jugador.getNombre());
             for(Carta carta : cartas){
                 jugador.getMano().agregarCarta(carta);
                 tablero.entregarCarta(jugador, carta);
@@ -155,10 +163,18 @@ public class Uno {
         } else {
             this.turnoActual++;
         }
+
         if(!turnoCancelado) {
+            if(!prevTurnoCancelado){
+                JOptionPane.showMessageDialog(null, "Iniciar turno");
+            }else{
+                this.prevTurnoCancelado = false;
+            }
             obtenerJugador().getMano().voltearTodasLasCartas();
         }
-        while (!puedeColocar() && !turnoCancelado){
+//        System.out.println("Mano de " + turnoActual);
+//        obtenerJugador().getMano().imprimirMano();
+        while (!puedeColocar() && !turnoCancelado && ganador == null){
             comer();
         }
 
@@ -178,7 +194,7 @@ public class Uno {
             carta.voltear();
             jugador.getMano().agregarCarta(carta);
             tablero.entregarCarta(jugador, carta);
-//            try {
+            //            try {
 //                Thread.sleep(100);  // Añadir un retraso de 200ms entre cada carta
 //            } catch (InterruptedException e) {
 //                e.printStackTrace();
@@ -188,7 +204,6 @@ public class Uno {
     }
 
     public boolean puedeColocar(){
-        System.out.println(ultimaCarta);
         return obtenerJugador().getMano().sePuedePonerAlgunaCarta(ultimaCarta);
     }
 
